@@ -38,11 +38,11 @@ BUILD SUCCESSFUL in 0s
 #### 상영관
 - 영화관에는 여러 개의 상영관이 있다.
 - 각 상영관은 고유한 번호와 좌석 배치를 가진다.
-- 좌석은 행(A~H)과 열(1~10)로 구성된다. (총 80석)
+- 좌석은 행(A\~H)과 열(1\~10)로 구성된다. (총 80석)
 
 #### 좌석 등급
 - 좌석은 `일반`, `프리미엄` 두 가지 등급이 있다.
-- 행 A~F는 일반석, 행 G~H는 프리미엄석이다.
+- 행 A\~F는 일반석, 행 G\~H는 프리미엄석이다.
 - 프리미엄석은 일반석보다 2,000원 추가된다.
 
 #### 상영 시간대
@@ -347,7 +347,7 @@ G5       14,000원   +2,000원   -2,000원   -7,000원     7,000원
 예매를 완료하시겠습니까? (Y/N)
 Y
 
-예매가 완료되었습니다! 🎉
+예매가 완료되었습니다!
 예매 번호: WC20240115001
 즐거운 관람 되세요!
 ```
@@ -435,7 +435,7 @@ WC20240115001
 ### 프로그래밍 요구 사항 1
 
 - JDK 21 버전에서 실행 가능해야 한다. **JDK 21에서 정상적으로 동작하지 않을 경우 0점 처리한다.**
-- 프로그램 실행의 시작점은 `Application`의 `main()`이다.
+- 프로그램 실행의 시작점은 `cinema.Application`의 `main()`이다.
 - `build.gradle` 파일을 변경할 수 없고, 제공된 라이브러리 이외의 외부 라이브러리는 사용하지 않는다.
 - 프로그램 종료 시 `System.exit()`를 호출하지 않는다.
 - 프로그래밍 요구 사항에서 달리 명시하지 않는 한 파일, 패키지 등의 이름을 바꾸거나 이동하지 않는다.
@@ -579,16 +579,6 @@ public enum TimeSlot {
         this.discount = discount;
     }
 
-    public static TimeSlot from(LocalTime time) {
-        if (time.isBefore(LocalTime.of(10, 0))) {
-            return MORNING;
-        }
-        if (time.isAfter(LocalTime.of(22, 0)) || time.equals(LocalTime.of(22, 0))) {
-            return LATE_NIGHT;
-        }
-        return REGULAR;
-    }
-
     // 추가 기능 구현
 }
 ```
@@ -628,87 +618,5 @@ public class Seat {
     }
 
     // 추가 기능 구현
-}
-```
-
-### 좌석 연속성 검증
-
-```java
-public class SeatValidator {
-    public static boolean areConsecutive(List<Seat> seats) {
-        if (seats.size() <= 1) {
-            return true;
-        }
-
-        // 같은 행인지 확인
-        char row = seats.get(0).getRow();
-        boolean sameRow = seats.stream().allMatch(s -> s.getRow() == row);
-        if (!sameRow) {
-            return false;
-        }
-
-        // 열 번호가 연속인지 확인
-        List<Integer> columns = seats.stream()
-                .map(Seat::getColumn)
-                .sorted()
-                .toList();
-
-        for (int i = 1; i < columns.size(); i++) {
-            if (columns.get(i) - columns.get(i - 1) != 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-```
-
-### 요금 계산
-
-```java
-public class PriceCalculator {
-    private static final int BASE_PRICE = 14000;
-
-    public static int calculate(Seat seat, TimeSlot timeSlot, AudienceType audienceType) {
-        int price = BASE_PRICE;
-        price += seat.getGrade().getAdditionalPrice();
-        price -= timeSlot.getDiscount();
-        price -= calculateAudienceDiscount(price, audienceType);
-        return price;
-    }
-
-    private static int calculateAudienceDiscount(int price, AudienceType type) {
-        return price * type.getDiscountPercent() / 100;
-    }
-}
-```
-
-### 예매
-
-```java
-public class Reservation {
-    private final String reservationNumber;
-    private final Schedule schedule;
-    private final List<Seat> seats;
-    private final List<Audience> audiences;
-    private final int totalPrice;
-    private final LocalDateTime createdAt;
-
-    // 추가 기능 구현
-}
-```
-
-### 예매 번호 생성
-
-```java
-public class ReservationNumberGenerator {
-    private static int sequence = 0;
-
-    public static String generate(LocalDate date) {
-        sequence++;
-        String dateStr = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String seqStr = String.format("%03d", sequence);
-        return "WC" + dateStr + seqStr; // WC20240115001
-    }
 }
 ```
