@@ -466,36 +466,8 @@ WC20240115001
 
 ### 프로그래밍 요구 사항 4
 
-- 함수(또는 메서드)의 길이가 10라인을 넘어가지 않도록 구현한다.
+- 함수(또는 메서드)의 길이가 15라인을 넘어가지 않도록 구현한다.
   - 함수(또는 메서드)가 한 가지 일만 잘 하도록 구현한다.
-- 입출력을 담당하는 클래스를 별도로 구현한다.
-  - 아래 `InputView`, `OutputView` 클래스를 참고하여 입출력 클래스를 구현한다.
-  - 클래스 이름, 메소드 반환 유형, 시그니처 등은 자유롭게 수정할 수 있다.
-
-```java
-public class InputView {
-    public int readMovieNumber() {
-        System.out.println("예매할 영화 번호를 입력하세요.");
-        String input = Console.readLine();
-        // ...
-    }
-    // ...
-}
-```
-
-```java
-public class OutputView {
-    public void printMovieList(List<MovieDto> movies) {
-        System.out.println("[영화 목록]");
-        // ...
-    }
-    
-    public void printSeatMap(SeatMapDto seatMap) {
-        // 좌석 배치도 출력
-    }
-    // ...
-}
-```
 
 ### 라이브러리
 
