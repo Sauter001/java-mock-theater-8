@@ -388,7 +388,6 @@ class ApplicationTest extends NsTest {
     @Nested
     @DisplayName("입력 예외 테스트")
     class InputExceptionTest {
-
         @Test
         @DisplayName("잘못된 메뉴 선택")
         void 잘못된_메뉴_선택() {

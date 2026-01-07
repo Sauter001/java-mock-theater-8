@@ -2,7 +2,7 @@ package cinema.parser.row;
 
 import cinema.domain.io.Row;
 import cinema.domain.io.Rows;
-import cinema.domain.movie.dao.ScheduleDao;
+import cinema.domain.schedule.dao.ScheduleDao;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

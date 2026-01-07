@@ -1,4 +1,4 @@
-package cinema.domain.movie.dao;
+package cinema.domain.schedule.dao;
 
 import java.time.LocalTime;
 

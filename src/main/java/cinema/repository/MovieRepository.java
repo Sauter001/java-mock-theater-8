@@ -4,6 +4,7 @@ import cinema.constant.IOConstant;
 import cinema.domain.io.Row;
 import cinema.domain.io.Rows;
 import cinema.domain.movie.Movie;
+import cinema.domain.movie.Movies;
 import cinema.error.MovieException;
 import cinema.parser.row.MovieRowParser;
 import cinema.parser.row.RowParser;
@@ -15,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class MovieRepository {
@@ -49,5 +51,15 @@ public class MovieRepository {
             rowList.add(new Row(tokens));
         }
         return new Rows(rowList);
+    }
+
+    public Optional<Movie> findWithCode(String movieCode) {
+        return this.movies.stream()
+                .filter(m -> m.equalsCode(movieCode))
+                .findFirst();
+    }
+
+    public List<Movie> findAll() {
+        return this.movies;
     }
 }

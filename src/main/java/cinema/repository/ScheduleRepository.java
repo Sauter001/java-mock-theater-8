@@ -3,7 +3,7 @@ package cinema.repository;
 import cinema.constant.IOConstant;
 import cinema.domain.io.Row;
 import cinema.domain.io.Rows;
-import cinema.domain.movie.dao.ScheduleDao;
+import cinema.domain.schedule.dao.ScheduleDao;
 import cinema.error.MovieException;
 import cinema.parser.row.RowParser;
 import cinema.parser.row.ScheduleRowParser;
@@ -49,5 +49,15 @@ public class ScheduleRepository {
             rowList.add(new Row(tokens));
         }
         return new Rows(rowList);
+    }
+
+    public List<ScheduleDao> findAll() {
+        return List.copyOf(this.schedules);
+    }
+
+    public List<ScheduleDao> findSchedulesOfMovieCode(String movieCode) {
+        return this.schedules.stream()
+                .filter(s -> Objects.equals(s.movieCode(), movieCode))
+                .toList();
     }
 }

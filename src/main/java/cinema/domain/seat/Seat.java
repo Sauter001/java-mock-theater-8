@@ -6,10 +6,26 @@ public class Seat {
     private final SeatGrade grade;
     private boolean reserved;
 
-    public Seat(char row, int column, SeatGrade grade) {
+    private Seat(char row, int column, SeatGrade grade) {
         this.row = row;
         this.column = column;
         this.grade = grade;
+    }
+
+    public static Seat positionOf(char row, int column) {
+        SeatGrade seatGrade = getGradeFromRow(row);
+        return new Seat(row, column, seatGrade);
+    }
+
+    private static SeatGrade getGradeFromRow(char row) {
+        if (isPremiumRow(row)) {
+            return SeatGrade.PREMIUM;
+        }
+        return SeatGrade.STANDARD;
+    }
+
+    private static boolean isPremiumRow(char row) {
+        return row == 'G' || row == 'H';
     }
 
     public String getPosition() {

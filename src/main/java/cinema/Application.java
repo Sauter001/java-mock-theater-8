@@ -1,6 +1,7 @@
 package cinema;
 
 import cinema.controller.CinemaController;
+import cinema.domain.seat.SeatMap;
 import cinema.repository.MovieRepository;
 import cinema.repository.ScheduleRepository;
 import cinema.service.MovieService;
@@ -19,6 +20,7 @@ public class Application {
     private static MovieService createMovieService() {
         MovieRepository movieRepository = new MovieRepository();
         ScheduleRepository scheduleRepository = new ScheduleRepository();
-        return new MovieService(movieRepository, scheduleRepository);
+        SeatMap seatMap = new SeatMap();
+        return new MovieService(movieRepository, scheduleRepository, seatMap);
     }
 }

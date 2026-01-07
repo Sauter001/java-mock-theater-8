@@ -1,7 +1,13 @@
 package cinema.controller;
 
 import cinema.domain.io.Command;
+import cinema.domain.io.movie.MovieSelectionCommand;
+import cinema.domain.movie.Movie;
+import cinema.domain.movie.Movies;
+import cinema.domain.schedule.Schedule;
+import cinema.domain.schedule.Schedules;
 import cinema.error.MovieException;
+import cinema.error.MovieNotExistsException;
 import cinema.service.MovieService;
 import cinema.view.InputView;
 import cinema.view.OutputView;
@@ -36,7 +42,25 @@ public class CinemaController {
     }
 
     private void runReservation() {
-        
+        retry(() -> {
+            Movies movies = movieService.findAllMovies();
+            outputView.displayMovies(movies.toMovieListDtos());
+            MovieSelectionCommand selectionCommand = inputView.readMovieSelection();
+            showScreenScheduleOfMovie(movies, selectionCommand);
+        });
+    }
+
+    private void showScreenScheduleOfMovie(Movies movies, MovieSelectionCommand selectionCommand) {
+        if (!isSelectedRight(movies, selectionCommand)) {
+            throw new MovieNotExistsException();
+        }
+        Movie movie = movieService.findMovieOf(selectionCommand.selectedNumber());
+        Schedules schedules = movieService.findScheduleOf(selectionCommand.selectedNumber());
+        outputView.displaySchedules(movieService.convertToScheduleDisplayDto(schedules, movie.getTitle()));
+    }
+
+    private static boolean isSelectedRight(Movies movies, MovieSelectionCommand selectionCommand) {
+        return movies.hasMovieOfCode(selectionCommand.selectedNumber());
     }
 
     private void retry(Runnable task) {
