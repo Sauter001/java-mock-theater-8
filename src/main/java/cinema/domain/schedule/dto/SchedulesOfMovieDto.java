@@ -12,7 +12,13 @@ public record SchedulesOfMovieDto(
             LocalTime startTime,
             LocalTime endTime,
             String timeSlotName,
-            int remainedSeats) {
-
+            int remainedSeats) implements Comparable<ScheduleDto> {
+        @Override
+        public int compareTo(ScheduleDto dto) {
+            if (theater != dto.theater) {
+                return Integer.compare(theater, dto.theater);
+            }
+            return startTime.compareTo(dto.startTime);
+        }
     }
 }

@@ -3,6 +3,7 @@ package cinema.domain.schedule;
 import cinema.domain.movie.Movie;
 import cinema.domain.movie.dto.MovieListDto;
 import cinema.domain.schedule.dto.SchedulesOfMovieDto;
+import cinema.domain.seat.SeatMap;
 import cinema.domain.seat.TimeSlot;
 
 import java.time.LocalTime;
@@ -35,11 +36,15 @@ public class Schedule {
                 remainedSeat);
     }
 
-    public String getScheduleCode() {
+    private String getScheduleCode() {
         return code;
     }
 
-    public String getMovieCode() {
+    private String getMovieCode() {
         return this.movie.getCode();
+    }
+
+    public SeatMap.SeatKey getSeatKey() {
+        return new SeatMap.SeatKey(getMovieCode(), getScheduleCode());
     }
 }

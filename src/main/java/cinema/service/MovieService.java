@@ -7,6 +7,7 @@ import cinema.domain.schedule.Schedules;
 import cinema.domain.schedule.dao.ScheduleDao;
 import cinema.domain.schedule.dto.SchedulesOfMovieDto;
 import cinema.domain.seat.SeatMap;
+import cinema.domain.seat.Seats;
 import cinema.error.MovieNotExistsException;
 import cinema.repository.MovieRepository;
 import cinema.repository.ScheduleRepository;
@@ -62,10 +63,10 @@ public class MovieService {
     public SchedulesOfMovieDto convertToScheduleDisplayDto(Schedules schedules, String movieTitle) {
         List<SchedulesOfMovieDto.ScheduleDto> scheduleDtos = new ArrayList<>();
         for (Schedule schedule : schedules) {
-            int remainedSeat = seatMap.findRemainedSeat(schedule.getMovieCode(), schedule.getScheduleCode());
+            int remainedSeat = seatMap.findRemainedSeat(schedule.getSeatKey());
             scheduleDtos.add(schedule.toScheduleDto(remainedSeat));
         }
-        return new SchedulesOfMovieDto(movieTitle, scheduleDtos);
+        return new SchedulesOfMovieDto(movieTitle, scheduleDtos.stream().sorted().toList());
     }
 
     public Movie findMovieOf(int movieId) {
@@ -74,5 +75,9 @@ public class MovieService {
             throw new MovieNotExistsException();
         }
         return movieOptional.get();
+    }
+
+    public Seats findOccupiedSeats(SeatMap.SeatKey seatKey) {
+        return this.seatMap.findOccupiedSeats(seatKey);
     }
 }

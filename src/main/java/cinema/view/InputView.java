@@ -2,10 +2,10 @@ package cinema.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import cinema.domain.io.Command;
-import cinema.domain.io.movie.MovieSelectionCommand;
+import cinema.domain.io.SelectionCommand;
 import cinema.error.MovieException;
 import cinema.parser.domain.DomainParser;
-import cinema.parser.domain.MovieSelectionCommandParser;
+import cinema.parser.domain.SelectionCommandParser;
 
 public class InputView {
     private static void displaySelectionGuide() {
@@ -22,9 +22,17 @@ public class InputView {
         return readWithRetry("\n", Command::from);
     }
 
-    public MovieSelectionCommand readMovieSelection() {
+    public SelectionCommand readMovieSelection() {
         String prompt = "예매할 영화 번호를 입력하세요.\n";
-        return readWithRetry(prompt, new MovieSelectionCommandParser());
+        return readSelection(prompt);
+    }
+
+    public SelectionCommand readScheduleSelection() {
+        return readSelection("예매할 상영 번호를 입력하세요.\n");
+    }
+
+    private SelectionCommand readSelection(String  prompt) {
+        return readWithRetry(prompt, new SelectionCommandParser());
     }
 
     private <T> T readWithRetry(String prompt, DomainParser<T> parser) {

@@ -14,4 +14,8 @@ public class Schedules implements Iterable<Schedule> {
     public Iterator<Schedule> iterator() {
         return this.schedules.iterator();
     }
+
+    public Schedule findScheduleOfIndex(int index) {
+        return this.schedules.get(index);
+    }
 }

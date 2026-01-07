@@ -1,11 +1,13 @@
 package cinema.controller;
 
 import cinema.domain.io.Command;
-import cinema.domain.io.movie.MovieSelectionCommand;
+import cinema.domain.io.SelectionCommand;
 import cinema.domain.movie.Movie;
 import cinema.domain.movie.Movies;
 import cinema.domain.schedule.Schedule;
 import cinema.domain.schedule.Schedules;
+import cinema.domain.seat.SeatMap;
+import cinema.domain.seat.Seats;
 import cinema.error.MovieException;
 import cinema.error.MovieNotExistsException;
 import cinema.service.MovieService;
@@ -45,21 +47,29 @@ public class CinemaController {
         retry(() -> {
             Movies movies = movieService.findAllMovies();
             outputView.displayMovies(movies.toMovieListDtos());
-            MovieSelectionCommand selectionCommand = inputView.readMovieSelection();
+            SelectionCommand selectionCommand = inputView.readMovieSelection();
             showScreenScheduleOfMovie(movies, selectionCommand);
         });
     }
 
-    private void showScreenScheduleOfMovie(Movies movies, MovieSelectionCommand selectionCommand) {
+    private void showScreenScheduleOfMovie(Movies movies, SelectionCommand selectionCommand) {
         if (!isSelectedRight(movies, selectionCommand)) {
             throw new MovieNotExistsException();
         }
         Movie movie = movieService.findMovieOf(selectionCommand.selectedNumber());
         Schedules schedules = movieService.findScheduleOf(selectionCommand.selectedNumber());
         outputView.displaySchedules(movieService.convertToScheduleDisplayDto(schedules, movie.getTitle()));
+        SelectionCommand scheduleSelection = inputView.readScheduleSelection();
+        Schedule schedule = schedules.findScheduleOfIndex(scheduleSelection.toIndex());
+        processSeatReservation(schedule);
     }
 
-    private static boolean isSelectedRight(Movies movies, MovieSelectionCommand selectionCommand) {
+    private void processSeatReservation(Schedule schedule) {
+        SeatMap.SeatKey seatKey = schedule.getSeatKey();
+        Seats seats = movieService.findOccupiedSeats(seatKey);
+    }
+
+    private static boolean isSelectedRight(Movies movies, SelectionCommand selectionCommand) {
         return movies.hasMovieOfCode(selectionCommand.selectedNumber());
     }
 
