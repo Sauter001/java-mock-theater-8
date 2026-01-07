@@ -23,7 +23,9 @@ class ApplicationTest extends NsTest {
         @DisplayName("영화 목록 조회")
         void 영화_목록_조회() {
             assertSimpleTest(() -> {
-                run("1", "Q", "Q");
+                run("1", "1", "1", "1", "A1",
+                        "2000-01-15", "N",
+                        "N", "Q");
                 assertThat(output()).contains("영화 목록");
                 assertThat(output()).contains("아바타: 물의 길");
                 assertThat(output()).contains("범죄도시3");
@@ -41,7 +43,9 @@ class ApplicationTest extends NsTest {
         @DisplayName("상영 시간표 조회")
         void 상영_시간표_조회() {
             assertSimpleTest(() -> {
-                run("1", "2", "Q", "Q");
+                run("1", "2", "1", "1", "A1",
+                        "2000-01-15", "N",
+                        "N", "Q");
                 assertThat(output()).contains("범죄도시3 상영 시간표");
                 assertThat(output()).contains("10:30");
                 assertThat(output()).contains("조조");
@@ -54,7 +58,9 @@ class ApplicationTest extends NsTest {
         @DisplayName("존재하지 않는 영화 번호")
         void 존재하지_않는_영화() {
             assertSimpleTest(() -> {
-                run("1", "99", "1", "Q", "Q");
+                run("1", "99", "1", "1", "1", "A1",
+                        "2000-01-15", "N",
+                        "N", "Q");
                 assertThat(output()).contains("[ERROR] 존재하지 않는 영화입니다");
             });
         }
@@ -68,7 +74,9 @@ class ApplicationTest extends NsTest {
         @DisplayName("좌석 배치도 출력")
         void 좌석_배치도_출력() {
             assertSimpleTest(() -> {
-                run("1", "2", "1", "Q", "Q");
+                run("1", "2", "1", "1", "A1",
+                        "2000-01-15", "N",
+                        "N", "Q");
                 assertThat(output()).contains("스크린");
                 assertThat(output()).contains("프리미엄");
                 assertThat(output()).contains("선택가능");
