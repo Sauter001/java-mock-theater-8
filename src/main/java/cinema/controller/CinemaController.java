@@ -1,5 +1,6 @@
 package cinema.controller;
 
+import cinema.domain.io.Command;
 import cinema.error.MovieException;
 import cinema.service.MovieService;
 import cinema.view.InputView;
@@ -19,7 +20,23 @@ public class CinemaController {
     }
 
     public void run() {
+        while (true) {
+            Command command = inputView.readSelection();
+            if (command == Command.EXIT) {
+                break;
+            }
+            runMovieSystem(command);
+        }
+    }
 
+    private void runMovieSystem(Command command) {
+        if (command == Command.RESERVATION) {
+            runReservation();
+        }
+    }
+
+    private void runReservation() {
+        
     }
 
     private void retry(Runnable task) {

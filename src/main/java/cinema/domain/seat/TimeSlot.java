@@ -1,4 +1,4 @@
-package cinema.domain.movie;
+package cinema.domain.seat;
 
 public enum TimeSlot {
     MORNING("조조", 2000),   // 10:00 이전

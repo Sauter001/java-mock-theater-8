@@ -14,4 +14,8 @@ public class Row implements Iterable<String> {
     public Iterator<String> iterator() {
         return this.columns.iterator();
     }
+
+    public String getValue(int index) {
+        return this.columns.get(index);
+    }
 }

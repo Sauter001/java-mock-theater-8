@@ -1,10 +1,25 @@
 package cinema.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import cinema.domain.io.Command;
 import cinema.error.MovieException;
 import cinema.parser.domain.DomainParser;
 
 public class InputView {
+    public Command readSelection() {
+        displaySelectionGuide();
+        return readWithRetry("\n", Command::from);
+    }
+
+    private static void displaySelectionGuide() {
+        System.out.println("안녕하세요. 우아한 시네마입니다. \uD83C\uDFAC\n");
+        System.out.println("기능을 선택하세요.");
+        System.out.println("1. 영화 예매");
+        System.out.println("2. 예매 확인");
+        System.out.println("3. 예매 취소");
+        System.out.println("Q. 종료");
+    }
+
     private <T> T readWithRetry(String prompt, DomainParser<T> parser) {
         while (true) {
             try {

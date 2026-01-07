@@ -7,6 +7,14 @@ public class Rows implements Iterable<Row> {
     private final List<Row> rows;
 
     public Rows(List<Row> rows) {
+        this(rows, true);
+    }
+
+    public Rows(List<Row> rows, boolean skipHeader) {
+        if (skipHeader) {
+            this.rows = rows.stream().skip(1).toList();
+            return;
+        }
         this.rows = rows;
     }
 

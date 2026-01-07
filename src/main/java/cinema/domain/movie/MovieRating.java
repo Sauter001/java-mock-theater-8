@@ -1,5 +1,9 @@
 package cinema.domain.movie;
 
+import cinema.error.InvalidInputException;
+
+import java.util.stream.Stream;
+
 public enum MovieRating {
     ALL("전체 관람가", 0),
     TWELVE("12세 이상", 12),
@@ -20,5 +24,12 @@ public enum MovieRating {
 
     public String getDescription() {
         return description;
+    }
+
+    public static MovieRating fromDescription(String description) {
+        return Stream.of(values())
+                .filter(r -> r.description.equals(description))
+                .findFirst()
+                .orElseThrow(InvalidInputException::new);
     }
 }
